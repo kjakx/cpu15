@@ -15,7 +15,7 @@ module dec_7seg(DIN, SEG7);
 			4'h7: dec = 7'b1111000;
 			4'h8: dec = 7'b0000000;
 			4'h9: dec = 7'b0010000;
-			default: dec = 7'bxxxxxxx;	
+			default: dec = 7'b1111111;	
 		endcase
 	endfunction
 

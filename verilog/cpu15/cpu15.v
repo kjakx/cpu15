@@ -1,8 +1,8 @@
 module cpu15(
     input CLK,
     input RESET_N,
-    input IO65_IN,
-    output IO64_OUT,
+    input[15:0] IO65_IN,
+    output[15:0] IO64_OUT
 );
     wire clk_ft;
     wire clk_dc;
@@ -26,6 +26,7 @@ module cpu15(
     wire[15:0] reg_5;
     wire[15:0] reg_6;
     wire[15:0] reg_7;
+	wire[15:0] io65_in;
     wire[7:0] ram_addr;
     wire[15:0] ram_in;
     wire[15:0] ram_out;
@@ -38,26 +39,27 @@ module cpu15(
     wire[15:0] ram_5;
     wire[15:0] ram_6;
     wire[15:0] ram_7;
+	wire[15:0] io64_out;
 
     clk_gen C1(
-        .CLK(clk),
+        .CLK(CLK),
         .CLK_FT(clk_ft),
         .CLK_DC(clk_dc),
         .CLK_EX(clk_ex),
-        .CLK_WB(clk_wb),
+        .CLK_WB(clk_wb)
     );
 
     fetch C2(
         .CLK_FT(clk_ft),
         .P_COUNT(p_count),
-        .PROM_OUT(prom_out),
+        .PROM_OUT(prom_out)
     );
 
     decode C3(
         .CLK_DC(clk_dc),
         .PROM_OUT(prom_out),
         .OP_CODE(op_code),
-        .OP_DATA(op_data),
+        .OP_DATA(op_data)
     );
 
     reg_dc C4(
@@ -72,7 +74,7 @@ module cpu15(
         .REG_6(reg_6),
         .REG_7(reg_7),
         .N_REG_OUT(n_reg_a),
-        .REG_OUT(reg_a),
+        .REG_OUT(reg_a)
     );
 
     reg_dc C5(
@@ -87,7 +89,7 @@ module cpu15(
         .REG_6(reg_6),
         .REG_7(reg_7),
         .N_REG_OUT(n_reg_b),
-        .REG_OUT(reg_b),
+        .REG_OUT(reg_b)
     );
 
     ram_dc C6(
@@ -101,14 +103,14 @@ module cpu15(
         .RAM_5(ram_5),
         .RAM_6(ram_6),
         .RAM_7(ram_7),
-        .IO65_IN(io65_in),
+        .IO65_IN(IO65_IN),
         .RAM_AD_OUT(ram_addr),
-        .RAM_OUT(ram_out),
+        .RAM_OUT(ram_out)
     );
 
     exec C7(
         .CLK_EX(clk_ex),
-        .RESET_N(reset_n),
+        .RESET_N(RESET_N),
         .OP_CODE(op_code),
         .REG_A(reg_a),
         .REG_B(reg_b),
@@ -118,12 +120,12 @@ module cpu15(
         .REG_IN(reg_in),
         .RAM_IN(ram_in),
         .REG_WEN(reg_wen),
-        .RAM_WEN(ram_wen),
+        .RAM_WEN(ram_wen)
     );
 
     reg_wb C8(
         .CLK_WB(clk_wb),
-        .RESET_N(reset_n),
+        .RESET_N(RESET_N),
         .N_REG(n_reg_a),
         .REG_IN(reg_in),
         .REG_WEN(reg_wen),
@@ -134,7 +136,7 @@ module cpu15(
         .REG_4(reg_4),
         .REG_5(reg_5),
         .REG_6(reg_6),
-        .REG_7(reg_7),
+        .REG_7(reg_7)
     );
 
     ram_wb C9(
@@ -149,7 +151,7 @@ module cpu15(
         .RAM_5(ram_5),
         .RAM_6(ram_6),
         .RAM_7(ram_7),
-        .IO64_OUT(io64_out),
+        .IO64_OUT(IO64_OUT)
     );
 endmodule
 

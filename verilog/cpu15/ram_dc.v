@@ -13,30 +13,23 @@ module ram_dc(
     output[7:0] RAM_AD_OUT,
     output[15:0] RAM_OUT
 );
-    reg[7:0] ram_ad_out;
-    reg[15:0] ram_out;
-
-    function[15:0] ram;
-        input[7:0] addr;
-        case (addr)
-            00000000: ram_out = RAM_0;
-            00000001: ram_out = RAM_1;
-            00000010: ram_out = RAM_2;
-            00000011: ram_out = RAM_3;
-            00000100: ram_out = RAM_4;
-            00000101: ram_out = RAM_5;
-            00000110: ram_out = RAM_6;
-            00000111: ram_out = RAM_7;
-            01000001: ram_out = IO65_IN;
-            default: ram_out = 15'bx;
-        endcase
-    endfunction
+    reg[7:0] RAM_AD_OUT;
+    reg[15:0] RAM_OUT;
 
     always @(posedge CLK_DC) begin
-        ram_out <= ram(RAM_AD_IN);
-        ram_ad_out <= RAM_AD_IN;
-    end
+        case (RAM_AD_IN)
+            00000000: RAM_OUT = RAM_0;
+            00000001: RAM_OUT = RAM_1;
+            00000010: RAM_OUT = RAM_2;
+            00000011: RAM_OUT = RAM_3;
+            00000100: RAM_OUT = RAM_4;
+            00000101: RAM_OUT = RAM_5;
+            00000110: RAM_OUT = RAM_6;
+            00000111: RAM_OUT = RAM_7;
+            01000001: RAM_OUT = IO65_IN;
+            default: ; // nothing to do
+        endcase
 
-    assign RAM_OUT = ram_out;
-    assign RAM_AD_OUT = ram_ad_out;
+        RAM_AD_OUT <= RAM_AD_IN;
+    end
 endmodule

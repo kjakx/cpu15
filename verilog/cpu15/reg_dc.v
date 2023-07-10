@@ -17,14 +17,14 @@ module reg_dc(
     
     always @(posedge CLK_DC) begin
         case (N_REG_IN)
-            000: REG_OUT = REG_0;
-            001: REG_OUT = REG_1;
-            010: REG_OUT = REG_2;
-            011: REG_OUT = REG_3;
-            100: REG_OUT = REG_4;
-            101: REG_OUT = REG_5;
-            110: REG_OUT = REG_6;
-            111: REG_OUT = REG_7;
+            3'b000: REG_OUT = REG_0;
+            3'b001: REG_OUT = REG_1;
+            3'b010: REG_OUT = REG_2;
+            3'b011: REG_OUT = REG_3;
+            3'b100: REG_OUT = REG_4;
+            3'b101: REG_OUT = REG_5;
+            3'b110: REG_OUT = REG_6;
+            3'b111: REG_OUT = REG_7;
             default: ; // nothing to do
         endcase
 

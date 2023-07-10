@@ -36,14 +36,14 @@ module reg_wb(
 		end
 		else if (REG_WEN == 1) begin
 			case (N_REG)
-				000: REG_0 <= REG_IN;
-				001: REG_1 <= REG_IN;
-				010: REG_2 <= REG_IN;
-				011: REG_3 <= REG_IN;
-				100: REG_4 <= REG_IN;
-				101: REG_5 <= REG_IN;
-				110: REG_6 <= REG_IN;
-				111: REG_7 <= REG_IN;
+				3'b000: REG_0 <= REG_IN;
+				3'b001: REG_1 <= REG_IN;
+				3'b010: REG_2 <= REG_IN;
+				3'b011: REG_3 <= REG_IN;
+				3'b100: REG_4 <= REG_IN;
+				3'b101: REG_5 <= REG_IN;
+				3'b110: REG_6 <= REG_IN;
+				3'b111: REG_7 <= REG_IN;
 				default: ;// nothing to do
 			endcase
 		end

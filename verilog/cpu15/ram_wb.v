@@ -27,18 +27,17 @@ module ram_wb(
 	always @(posedge CLK_WB) begin
 		if (RAM_WEN == 1) begin
 			case (RAM_ADDR)
-				00000000: RAM_0 <= RAM_IN;
-				00000001: RAM_1 <= RAM_IN;
-				00000010: RAM_2 <= RAM_IN;
-				00000011: RAM_3 <= RAM_IN;
-				00000100: RAM_4 <= RAM_IN;
-				00000101: RAM_5 <= RAM_IN;
-				00000110: RAM_6 <= RAM_IN;
-				00000111: RAM_7 <= RAM_IN;
-				01000000: IO64_OUT <= RAM_IN;
-				default: ;// nothing to do
+				8'b00000000: RAM_0 <= RAM_IN;
+				8'b00000001: RAM_1 <= RAM_IN;
+				8'b00000010: RAM_2 <= RAM_IN;
+				8'b00000011: RAM_3 <= RAM_IN;
+				8'b00000100: RAM_4 <= RAM_IN;
+				8'b00000101: RAM_5 <= RAM_IN;
+				8'b00000110: RAM_6 <= RAM_IN;
+				8'b00000111: RAM_7 <= RAM_IN;
+				8'b01000000: IO64_OUT <= RAM_IN;
+				default: ; // nothing to do
 			endcase
 		end
 	end
 endmodule
-			

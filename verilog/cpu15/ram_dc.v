@@ -18,15 +18,15 @@ module ram_dc(
 
     always @(posedge CLK_DC) begin
         case (RAM_AD_IN)
-            00000000: RAM_OUT = RAM_0;
-            00000001: RAM_OUT = RAM_1;
-            00000010: RAM_OUT = RAM_2;
-            00000011: RAM_OUT = RAM_3;
-            00000100: RAM_OUT = RAM_4;
-            00000101: RAM_OUT = RAM_5;
-            00000110: RAM_OUT = RAM_6;
-            00000111: RAM_OUT = RAM_7;
-            01000001: RAM_OUT = IO65_IN;
+            8'b00000000: RAM_OUT = RAM_0;
+            8'b00000001: RAM_OUT = RAM_1;
+            8'b00000010: RAM_OUT = RAM_2;
+            8'b00000011: RAM_OUT = RAM_3;
+            8'b00000100: RAM_OUT = RAM_4;
+            8'b00000101: RAM_OUT = RAM_5;
+            8'b00000110: RAM_OUT = RAM_6;
+            8'b00000111: RAM_OUT = RAM_7;
+            8'b01000001: RAM_OUT = IO65_IN;
             default: ; // nothing to do
         endcase
 

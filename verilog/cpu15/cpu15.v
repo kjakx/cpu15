@@ -26,7 +26,7 @@ module cpu15(
     wire[15:0] reg_5;
     wire[15:0] reg_6;
     wire[15:0] reg_7;
-	wire[15:0] io65_in;
+    wire[15:0] io65_in;
     wire[7:0] ram_addr;
     wire[15:0] ram_in;
     wire[15:0] ram_out;
@@ -39,7 +39,7 @@ module cpu15(
     wire[15:0] ram_5;
     wire[15:0] ram_6;
     wire[15:0] ram_7;
-	wire[15:0] io64_out;
+    wire[15:0] io64_out;
 
     clk_gen C1(
         .CLK(CLK),

@@ -13,7 +13,6 @@ module ram_dc(
     output[7:0] RAM_AD_OUT,
     output[15:0] RAM_OUT
 );
-    reg[7:0] RAM_AD_OUT;
     reg[15:0] RAM_OUT;
 
     always @(posedge CLK_DC) begin
@@ -29,7 +28,6 @@ module ram_dc(
             8'b01000001: RAM_OUT = IO65_IN;
             default: ; // nothing to do
         endcase
-
-        RAM_AD_OUT <= RAM_AD_IN;
     end
+    assign RAM_AD_OUT = RAM_AD_IN;
 endmodule

@@ -25,7 +25,7 @@ module ram_wb(
 	reg[15:0] IO64_OUT;
 
 	always @(posedge CLK_WB) begin
-		if (RAM_WEN == 1) begin
+		if (RAM_WEN == 1'b1) begin
 			case (RAM_ADDR)
 				8'b00000000: RAM_0 <= RAM_IN;
 				8'b00000001: RAM_1 <= RAM_IN;

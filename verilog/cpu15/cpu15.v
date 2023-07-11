@@ -142,6 +142,7 @@ module cpu15(
     ram_wb C9(
         .CLK_WB(clk_wb),
         .RAM_ADDR(ram_addr),
+        .RAM_IN(ram_in),
         .RAM_WEN(ram_wen),
         .RAM_0(ram_0),
         .RAM_1(ram_1),

@@ -25,6 +25,6 @@ module fetch(
     end
 
     always @(posedge CLK_FT) begin
-        PROM_OUT = mem[P_COUNT[3:0]];
+        PROM_OUT <= mem[P_COUNT[3:0]];
     end
 endmodule

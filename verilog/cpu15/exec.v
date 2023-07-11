@@ -6,7 +6,7 @@ module exec(
     input[15:0] REG_B,
     input[7:0] OP_DATA,
     input[15:0] RAM_OUT,
-    output reg[7:0]	P_COUNT,
+    output reg[7:0] P_COUNT,
     output reg[15:0] REG_IN,
     output reg[15:0] RAM_IN,
     output reg REG_WEN,

@@ -9,11 +9,9 @@ module reg_dc(
     input[15:0] REG_5,
     input[15:0] REG_6,
     input[15:0] REG_7,
-    output[2:0] N_REG_OUT,
-    output[15:0] REG_OUT
+    output reg[2:0] N_REG_OUT,
+    output reg[15:0] REG_OUT
 );
-    reg[2:0] N_REG_OUT;
-    reg[15:0] REG_OUT;
     
     always @(posedge CLK_DC) begin
         case (N_REG_IN)

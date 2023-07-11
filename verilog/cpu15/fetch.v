@@ -1,9 +1,8 @@
 module fetch(
     input CLK_FT,
     input[7:0] P_COUNT,
-    output[14:0] PROM_OUT
+    output reg [14:0] PROM_OUT
 );
-	reg[14:0] PROM_OUT;
     reg[14:0] mem[15:0];
 
     initial begin
@@ -26,6 +25,6 @@ module fetch(
     end
 
     always @(posedge CLK_FT) begin
-		PROM_OUT = mem[P_COUNT[3:0]];
+        PROM_OUT = mem[P_COUNT[3:0]];
     end
 endmodule

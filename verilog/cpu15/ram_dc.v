@@ -11,9 +11,8 @@ module ram_dc(
     input[15:0] RAM_7,
     input[15:0] IO65_IN,
     output[7:0] RAM_AD_OUT,
-    output[15:0] RAM_OUT
+    output reg[15:0] RAM_OUT
 );
-    reg[15:0] RAM_OUT;
 
     always @(posedge CLK_DC) begin
         case (RAM_AD_IN)

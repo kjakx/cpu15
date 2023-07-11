@@ -154,18 +154,18 @@ module cpu15_sim;
         .IO64_OUT(IO64_OUT)
     );
 
-	parameter T = 20;
-	
-	always #(T/2)
-		CLK = ~CLK;
+    parameter T = 20;
+    
+    always #(T/2)
+        CLK = ~CLK;
 
-	initial begin
-		#(T*5) RESET_N = 1;
-		#(T*300) $finish;
-	end
-	
-	initial begin
-		$dumpfile("cpu15_sim.vcd");
-		$dumpvars(0, cpu15_sim);
-	end
+    initial begin
+        #(T*5) RESET_N = 1;
+        #(T*300) $finish;
+    end
+    
+    initial begin
+        $dumpfile("cpu15_sim.vcd");
+        $dumpvars(0, cpu15_sim);
+    end
 endmodule

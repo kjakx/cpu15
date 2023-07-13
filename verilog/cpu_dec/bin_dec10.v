@@ -39,7 +39,7 @@ module bin_dec10(
             DEC_OUT1 <= 4'd2;
             rem_int <= cmp_int - 20;
         end
-        else if (cmp_int > 99) begin
+        else if (cmp_int > 9) begin
             DEC_OUT1 <= 4'd1;
             rem_int <= cmp_int - 10;
         end

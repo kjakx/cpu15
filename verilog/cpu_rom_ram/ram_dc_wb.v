@@ -14,7 +14,7 @@ integer i;
 
 initial begin
 	for (i = 0; i < 64; i = i + 1)
-		ram_array[i] = 16'b0;
+		ram_array[i] <= 16'b0;
 end
 
 always @(posedge CLK_DC) begin
@@ -25,10 +25,12 @@ always @(posedge CLK_DC) begin
 end
 
 always @(posedge CLK_WB) begin
-    if (RAM_WEN == 1'b1)
-        ram_array[RAM_ADDR] <= RAM_IN;
-    else if (RAM_ADDR == 8'd64)
-        IO64_OUT <= RAM_IN;
+    if (RAM_WEN == 1'b1) begin
+	     if (RAM_ADDR < 8'd64)
+            ram_array[RAM_ADDR] <= RAM_IN;
+        else if (RAM_ADDR == 8'd64)
+            IO64_OUT <= RAM_IN;
+	 end
 end
 
 endmodule

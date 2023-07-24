@@ -50,7 +50,7 @@ module cpu_rom_ram(
     );
 
     fetch_rom C2(
-	     .address(p_count),
+        .address(p_count),
         .clock(clk_ft),
         .q(prom_out)
     );
@@ -134,7 +134,6 @@ module cpu_rom_ram(
         .IO64_OUT(io64_out)
     );
 
-	 assign io65_in = IO65_IN & 16'b0000001111111111;
+    assign io65_in = IO65_IN & 16'b0000001111111111;
     assign IO64_OUT = io64_out ^ 16'b1111110000000000;
 endmodule
-

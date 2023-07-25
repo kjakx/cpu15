@@ -1,8 +1,14 @@
-use std::io::prelude::*;
-use std::io::BufReader;
+mod parser;
+
+//use std::io::prelude::*;
+//use std::io::BufReader;
+use nom::sequence::delimited;
+use nom_bufreader::bufreader::BufReader;
+use nom_bufreader::{Error, Parse};
 use std::fs::File;
 
 use crate::command::*;
+use crate::assembler::parser::*;
 
 pub struct Assembler {
     reader: BufReader<File>,
@@ -17,43 +23,14 @@ impl Assembler {
         }
     }
 
+    pub fn parse_line<'a>(&'a self, input: &'a [u8]) -> IResult<&'a [u8], u16> {
+        delimited(multispace0, parse_instruction, multispace0)(input)
+    }
+
     pub fn assemble_line(&mut self) -> Option<u16> {
-        let mut line = String::new();
-        let _size = self.reader.read_line(&mut line);
-        let iter_cmd = &mut line.split_whitespace();
-        let cmd = if let Some(c) = iter_cmd.next() {
-            Command::from_str(c)
-        } else {
-            return None; // eof or empty line
-        };
-        let inst = match cmd {
-            Command::Mov | Command::Add | Command::Sub |
-            Command::And | Command::Or  | Command::Cmp => {
-                let reg_a = iter_cmd.next().unwrap();
-                let reg_b = iter_cmd.next().unwrap();
-                let id_a = reg_a.chars().nth(3).unwrap().to_digit(10).unwrap() as u16;
-                let id_b = reg_b.chars().nth(3).unwrap().to_digit(10).unwrap() as u16;
-                (cmd as u16) << 11 | id_a << 8 | id_b << 5
-            },
-            Command::Sl | Command::Sr | Command::Sra => {
-                let reg_a = iter_cmd.next().unwrap();
-                let id_a = reg_a.chars().nth(3).unwrap().to_digit(10).unwrap() as u16;
-                (cmd as u16) << 11 | id_a << 8
-            },
-            Command::Ldl | Command::Ldh | Command::Ld | Command::St => {
-                let reg_a = iter_cmd.next().unwrap();
-                let data = iter_cmd.next().unwrap().parse::<i16>().unwrap();
-                let id_a = reg_a.chars().nth(3).unwrap().to_digit(10).unwrap() as u16;
-                (cmd as u16) << 11 | id_a << 8 | data as u16 & 0x00ff
-            },
-            Command::Je | Command::Jmp => {
-                let addr = iter_cmd.next().unwrap().parse::<u16>().unwrap();
-                (cmd as u16) << 11 | addr & 0x00ff
-            },
-            Command::Hlt => {
-                (cmd as u16) << 11
-            }
-        };
-        Some(inst)
+        match self.reader.parse(parse_line) {
+            Ok(inst) => Some(inst),
+            Err(_) => None
+        }
     }
 }

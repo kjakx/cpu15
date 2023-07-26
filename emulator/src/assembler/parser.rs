@@ -3,17 +3,22 @@ pub use nom::{
         map_res,
         map_parser,
         map,
-        opt
+        opt,
+        eof
     },
-    bytes::streaming::tag,
-    character::streaming::{
+    bytes::complete::tag,
+    character::complete::{
         alpha1,
         oct_digit1,
         digit1,
         multispace0,
-        space1
+        space0,
+        space1,
+        alphanumeric1,
+        i16,
+        u16
     },
-    number::streaming::{
+    number::complete::{
         le_u16,
         le_i16
     },
@@ -23,7 +28,8 @@ pub use nom::{
         preceded,
         terminated
     },
-    IResult
+    IResult,
+    error::*
 };
 
 use crate::command::*;
@@ -34,25 +40,19 @@ fn parse_command(input: &[u8]) -> IResult<&[u8], Command> {
 }
 
 fn parse_reg(input: &[u8]) -> IResult<&[u8], u16> {
-    map_parser(preceded(tag("Reg"), oct_digit1), le_u16)(input)
+    preceded(tag("Reg"), u16)(input)
 }
 
 fn parse_data(input: &[u8]) -> IResult<&[u8], i16> {
-    let (input, sign) = opt(tag("-"))(input)?;
-    let (input, abs) = map_parser(digit1, le_i16)(input)?;
-    let data = match sign {
-        Some(_) => -abs,
-        None => abs
-    };
-    Ok((input, data))
+    i16(input)
 }
 
 fn parse_addr(input: &[u8]) -> IResult<&[u8], u16> {
-    map_parser(digit1, le_u16)(input)
+    u16(input)
 }
 
-pub fn parse_instruction(input: &[u8]) -> IResult<&[u8], u16> {
-    let (input, cmd) = terminated(parse_command, space1)(input)?;
+fn parse_instruction(input: &[u8]) -> IResult<&[u8], u16> {
+    let (input, cmd) = terminated(parse_command, space0)(input)?;
     let (input, inst) = match cmd {
         Command::Mov | Command::Add | Command::Sub |
         Command::And | Command::Or  | Command::Cmp => {
@@ -88,6 +88,47 @@ pub fn parse_instruction(input: &[u8]) -> IResult<&[u8], u16> {
     Ok((input, inst))
 }
 
-pub fn parse_line<'a>(input: &'a [u8]) -> IResult<&'a[u8], u16> {
+pub fn parse_line(input: &[u8]) -> IResult<&[u8], u16> {
     delimited(multispace0, parse_instruction, multispace0)(input)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_parse_command() {
+        assert_eq!(parse_command(&b"add"[..]), Ok((&b""[..], Command::Add)));
+        assert_eq!(parse_command(&b"sub Reg0 Reg1"[..]), Ok((&b" Reg0 Reg1"[..], Command::Sub)));
+    }
+
+    #[test]
+    fn test_parse_reg() {
+        assert_eq!(parse_reg(&b"Reg0"[..]), Ok((&b""[..], 0_u16)));
+        assert_eq!(parse_reg(&b"Reg3"[..]), Ok((&b""[..], 3_u16)));
+        assert_eq!(parse_reg(&b"Reg8"[..]), Ok((&b""[..], 8_u16)));
+    }
+
+    #[test]
+    fn test_parse_data() {
+        assert_eq!(parse_data(&b"13487"[..]), Ok((&b""[..], 13487_i16)));
+        assert_eq!(parse_data(&b"-335"[..]), Ok((&b""[..], -335_i16)));
+        assert_eq!(parse_data(&b"+67"[..]), Ok((&b""[..], 67_i16)));
+    }
+
+    #[test]
+    fn test_parse_addr() {
+        assert_eq!(parse_addr(&b"65"[..]), Ok((&b""[..], 65_u16)));
+        assert_eq!(parse_addr(&b"0"[..]), Ok((&b""[..], 0_u16)));
+        assert_eq!(parse_addr(&b"64"[..]), Ok((&b""[..], 64_u16)));
+    }
+
+    #[test]
+    fn test_parse_instruction() {
+        assert_eq!(parse_instruction(&b"add Reg2 Reg1"[..]), Ok((&b""[..], 0x0a20)));
+        assert_eq!(parse_instruction(&b"sl Reg0"[..]), Ok((&b""[..], 0x2800)));
+        assert_eq!(parse_instruction(&b"ldh Reg0 0"[..]), Ok((&b""[..], 0x4800)));
+        assert_eq!(parse_instruction(&b"st Reg0 64"[..]), Ok((&b""[..], 0x7040)));
+        assert_eq!(parse_instruction(&b"je 13"[..]), Ok((&b""[..], 0x580D)));
+        assert_eq!(parse_instruction(&b"hlt"[..]), Ok((&b""[..], 0x7800)));
+    }
 }

@@ -1,13 +1,9 @@
 mod parser;
 
-//use std::io::prelude::*;
-//use std::io::BufReader;
-use nom::sequence::delimited;
-use nom_bufreader::bufreader::BufReader;
-use nom_bufreader::{Error, Parse};
+use std::io::prelude::*;
+use std::io::BufReader;
 use std::fs::File;
 
-use crate::command::*;
 use crate::assembler::parser::*;
 
 pub struct Assembler {
@@ -23,13 +19,11 @@ impl Assembler {
         }
     }
 
-    pub fn parse_line<'a>(&'a self, input: &'a [u8]) -> IResult<&'a [u8], u16> {
-        delimited(multispace0, parse_instruction, multispace0)(input)
-    }
-
     pub fn assemble_line(&mut self) -> Option<u16> {
-        match self.reader.parse(parse_line) {
-            Ok(inst) => Some(inst),
+        let mut line = String::new();
+        let _size = self.reader.read_line(&mut line);
+        match parse_line(line.as_bytes()) {
+            Ok((_, inst)) => Some(inst),
             Err(_) => None
         }
     }

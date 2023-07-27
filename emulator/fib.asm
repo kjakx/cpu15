@@ -27,8 +27,9 @@ add Reg7 Reg1
 mov Reg2 Reg7
 st Reg2 64
 cmp Reg3 Reg6
-je 33
+je 34
+add Reg3 Reg4
 mov Reg0 Reg1
 mov Reg1 Reg2
-jmp 16
+jmp 24
 hlt

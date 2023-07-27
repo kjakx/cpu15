@@ -12,7 +12,7 @@ ldh Reg5 0
 ldl Reg5 2
 ldh Reg6 0
 ldl Reg6 20
-ldl Reg7 0
+ldh Reg7 0
 ldl Reg7 0
 add Reg3 Reg4
 cmp Reg3 Reg4

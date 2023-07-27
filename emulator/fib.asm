@@ -18,7 +18,7 @@ add Reg3 Reg4
 cmp Reg3 Reg4
 je 20
 jmp 22
-st reg2 64
+st Reg2 64
 jmp 16
 cmp Reg3 Reg5
 je 20

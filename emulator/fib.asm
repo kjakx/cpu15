@@ -5,7 +5,7 @@ ldl Reg1 1
 ldh Reg2 0
 ldl Reg2 1
 ldh Reg3 0
-ldl Reg3 1
+ldl Reg3 0
 ldh Reg4 0
 ldl Reg4 1
 ldh Reg5 0
@@ -17,8 +17,10 @@ ldl Reg7 0
 add Reg3 Reg4
 cmp Reg3 Reg4
 je 20
-jmp 22
+jmp 24
 st Reg2 64
+cmp Reg3 Reg6
+je 36
 jmp 16
 cmp Reg3 Reg5
 je 20
@@ -27,9 +29,9 @@ add Reg7 Reg1
 mov Reg2 Reg7
 st Reg2 64
 cmp Reg3 Reg6
-je 34
+je 36
 add Reg3 Reg4
 mov Reg0 Reg1
 mov Reg1 Reg2
-jmp 24
+jmp 26
 hlt
